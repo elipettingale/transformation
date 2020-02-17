@@ -59,7 +59,7 @@ class Transformer implements TransformerContract
         $attributes = [];
 
         foreach($this->item as $attribute => $value) {
-            $attribute[] = $attribute;
+            $attributes[] = $attribute;
         }
 
         $methods = preg_grep('/get(.*)Attribute/', get_class_methods($this));
