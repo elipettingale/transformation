@@ -4,6 +4,15 @@ namespace EliPett\Transformation\Transformers;
 
 use EliPett\Transformation\Contracts\Transformer as TransformerContract;
 
+/**
+ * Class Transformer
+ * @package EliPett\Transformation\Transformers
+ *
+ * @property mixed $item
+ * @property array $includes
+ * @property array $excludes
+ * @property array $rename
+ */
 class Transformer implements TransformerContract
 {
     protected $item = null;
