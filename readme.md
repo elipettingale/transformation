@@ -2,7 +2,7 @@
 
 A package to easily transform data using transformer classes. The idea behind this package is to be able to take data in one format and return it in a different or stripped down format. For example, you might use this when you are making an api endpoint and don't want to return everything or want to return something in multiple formats.
 
-This is the vanilla version of this package. There is also a wordpress specific version here: https://github.com/elipettingale/wordpress-transformation
+This is the generic version of this package. There is also a wordpress specific version here: https://github.com/elipettingale/wordpress-transformation
 
 ## How to Install
 
@@ -14,7 +14,7 @@ Just install the package using composer:
 
 First start by creating a transformer class:
 
-    class UserTransfomer extends EliPett\Transformation\Transformers\Transformer
+    class UserTransfomer extends Transformer
     {
     
     }
@@ -34,7 +34,7 @@ Then use the Transform class to transform some data:
         ]
     ];
     
-    $users = EliPett\Transformation\Services\Transform::all($users, UserTransfomer::class);
+    $users = Transform::all($users, UserTransfomer::class);
 
 Based on the configuration defined in your transformer class the data will be manipulated and returned
 
@@ -48,7 +48,7 @@ These are properties you can define to determine which attributes are returned.
 
 Defining includes will mean that only attributes that you define will be returned, for example the following transformer:
 
-    class UserTransfomer extends EliPett\Transformation\Transformers\Transformer
+    class UserTransfomer extends Transformer
     {
         protected $includes = [
             'first_name'
@@ -68,7 +68,7 @@ would mean that using our earlier example we now have the following in $users:
     
 Defining excludes will mean that all attributes will be returned except for those that you define, for example the following transformer:
 
-    class UserTransfomer extends EliPett\Transformation\Transformers\Transformer
+    class UserTransfomer extends Transformer
     {
         protected $excludes = [
             'first_name'
@@ -88,11 +88,13 @@ would now transform our $users to:
         ]
     ]
     
+If you define neither then all attributes will be returned.
+    
 ### Renames
 
 Don't like the name of an attribute? You can use renames to change the key of attributes:
 
-    class UserTransfomer extends EliPett\Transformation\Transformers\Transformer
+    class UserTransfomer extends Transformer
     {
         protected $includes = [
             'first_name'
