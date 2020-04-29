@@ -20,6 +20,7 @@ class Transformer implements TransformerContract
     protected $includes = [];
     protected $excludes = [];
     protected $rename = [];
+    protected $date_format = [];
 
     public function __construct($item)
     {
@@ -43,7 +44,7 @@ class Transformer implements TransformerContract
     {
         $data = [];
 
-        foreach($this->includes as $attribute) {
+        foreach ($this->includes as $attribute) {
             $this->transformAttribute($data, $attribute);
         }
 
@@ -54,7 +55,7 @@ class Transformer implements TransformerContract
     {
         $data = [];
 
-        foreach($this->attributes() as $attribute) {
+        foreach ($this->attributes() as $attribute) {
             if (!in_array($attribute, $this->excludes)) {
                 $this->transformAttribute($data, $attribute);
             }
@@ -67,13 +68,13 @@ class Transformer implements TransformerContract
     {
         $attributes = [];
 
-        foreach($this->item as $attribute => $value) {
+        foreach ($this->item as $attribute => $value) {
             $attributes[] = $attribute;
         }
 
         $methods = preg_grep('/get(.*)Attribute/', get_class_methods($this));
 
-        foreach($methods as $method) {
+        foreach ($methods as $method) {
             $attribute = substr($method, 3, strlen($method) - 12);
             $attributes[] = lower_snake_case($attribute);
         }
@@ -97,9 +98,30 @@ class Transformer implements TransformerContract
         $method = 'get' . lower_camel_case($attribute) . 'Attribute';
 
         if (method_exists($this, $method)) {
-            return $this->$method();
+            return $this->castValue($attribute, $this->$method());
         }
 
-        return $this->item[$attribute];
+        return $this->castValue($attribute, $this->item[$attribute]);
+    }
+
+    protected function castValue($attribute, $value)
+    {
+        $value = $this->castDateValue($attribute, $value);
+
+        return $value;
+    }
+
+    protected function castDateValue($attribute, $value)
+    {
+        if (!isset($this->date_format[$attribute])) {
+            return $value;
+        }
+
+        try {
+            $value = new \DateTime($value);
+            return $value->format($this->date_format[$attribute]);
+        } catch (\Exception $exception) {
+            return $value;
+        }
     }
 }
