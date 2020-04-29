@@ -117,6 +117,14 @@ class Transformer implements TransformerContract
             return $value;
         }
 
+        if ($value instanceof \DateTime) {
+            return $value->format($this->date_format[$attribute]);
+        }
+
+        if (!is_string($value)) {
+            return $value;
+        }
+
         try {
             $value = new \DateTime($value);
             return $value->format($this->date_format[$attribute]);
