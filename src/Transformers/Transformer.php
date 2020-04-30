@@ -24,15 +24,15 @@ class Transformer implements TransformerContract
 
     public function __construct($item)
     {
+        $this->item = $item;
+
         if ($this->includes !== [] && $this->excludes !== []) {
             throw new \InvalidArgumentException("Invalid transformer setup, please use includes or excludes, not both.");
         }
     }
 
-    public function transform($item)
+    public function transform()
     {
-        $this->item = $item;
-
         if ($this->includes !== []) {
             return $this->transformUsingIncludes();
         }

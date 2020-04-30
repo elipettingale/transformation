@@ -6,7 +6,7 @@ use EliPett\Transformation\Contracts\Transformer;
 
 class TransformerFactory
 {
-    public static function make($item , string $class)
+    public static function make($item , string $class): Transformer
     {
         $transformer = new $class($item);
 
