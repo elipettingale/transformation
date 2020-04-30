@@ -6,10 +6,12 @@ class Transform
 {
     public static function all($items, string $transformerClass)
     {
+        $transformer = TransformerFactory::make($items[0], $transformerClass);
+
         $data = [];
 
         foreach($items as $item) {
-            $data[] = self::one($item, $transformerClass);
+            $data[] = $transformer->transform($item);
         }
 
         return $data;

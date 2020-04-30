@@ -24,15 +24,15 @@ class Transformer implements TransformerContract
 
     public function __construct($item)
     {
-        $this->item = $item;
-
         if ($this->includes !== [] && $this->excludes !== []) {
             throw new \InvalidArgumentException("Invalid transformer setup, please use includes or excludes, not both.");
         }
     }
 
-    public function transform()
+    public function transform($item)
     {
+        $this->item = $item;
+
         if ($this->includes !== []) {
             return $this->transformUsingIncludes();
         }
@@ -95,7 +95,7 @@ class Transformer implements TransformerContract
 
     protected function getValue($attribute)
     {
-        $method = 'get' . lower_camel_case($attribute) . 'Attribute';
+        $method = 'get' . upper_camel_case($attribute) . 'Attribute';
 
         if (method_exists($this, $method)) {
             return $this->castValue($attribute, $this->$method());
