@@ -8,7 +8,7 @@ This is the generic version of this package. There is also a wordpress specific 
 
 Just install the package using composer:
 
-    composer require elipettingle/transformation
+    composer require elipettingale/transformation
     
 ## How to Use
 
